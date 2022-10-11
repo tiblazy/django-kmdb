@@ -14,3 +14,4 @@ class MovieCRUDView(RetrieveUpdateDestroyAPIView):
     serializer_class = MovieSerializer
     permission_classes = [MoviePermission]
     lookup_field = 'id'
+    lookup_url_kwarg = 'movie_id'

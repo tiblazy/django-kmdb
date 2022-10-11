@@ -29,4 +29,9 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     def update(self, instance: Movie, validated_data: dict) -> dict:
         pass
+        # if validated_data('genres').exists:
+        #     instance.genres.update(**validated_data('genres'))            
+                    
+        # instance.save()
         
+        # return instance

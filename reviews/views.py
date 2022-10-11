@@ -8,7 +8,6 @@ class ReviewMovieView(ListCreateAPIView):
     serializer_class = ReviewSerializer
     authentication_classes = [ReviewPermission]
 
-
 class ReviewMovieByIdView(RetrieveDestroyAPIView):
     queryset = Review
     serializer_class = ReviewSerializer

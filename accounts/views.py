@@ -43,3 +43,4 @@ class AccountFilterView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication] 
     permission_classes = [IsAuthenticated, AccountPermission]
     lookup_field = 'id'
+    lookup_url_kwarg = 'user_id'
