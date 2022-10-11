@@ -1,3 +1,4 @@
+from pkgutil import get_data
 from rest_framework import serializers
 
 from .models import Movie
@@ -23,3 +24,6 @@ class MovieSerializer(serializers.ModelSerializer):
             movie.genres.add(genre) 
     
         return movie
+    
+    def update(self, instance: Movie, validated_data: dict):
+        pass

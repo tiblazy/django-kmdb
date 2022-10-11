@@ -1,23 +1,16 @@
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveDestroyAPIView
-from rest_framework.views import APIView, Request, Response, status
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
-
-from rest_framework.authentication import TokenAuthentication
-
-from accounts.permissions import AccountMoviePermission
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from .models import Movie
 from .serializers import MovieSerializer
+from .permissions import MoviePermission
 
 class MovieView(ListCreateAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    # authentication_classes = [TokenAuthentication]
-    permission_classes = [AccountMoviePermission]
+    permission_classes = [MoviePermission]
     
-class MovieCRUDView(RetrieveDestroyAPIView):
+class MovieCRUDView(RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = [AccountMoviePermission]
+    permission_classes = [MoviePermission]
     lookup_field = 'id'

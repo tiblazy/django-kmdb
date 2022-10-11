@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 
 from .models import Account
@@ -22,9 +21,6 @@ class AccountView(ListAPIView):
 class AccountRegisterView(CreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    
-    def perform_create(self, serializer):
-        return serializer.save()
     
 class AccountLoginView(APIView):
     def post(self, request):
