@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from django.contrib.auth.hashers import make_password
+
 from .models import Account
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -12,10 +14,19 @@ class AccountSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data: dict) -> dict:
+        validated_data.update({'password': make_password(validated_data['password'])})
         account = Account.objects.create(**validated_data)
         
         return account
+class LoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
     
+    class Meta:
+        model = Account
+        fields = ['username', 'password']
     
-# fazer depois
-# Customize o Django Admin para estar 100% funcional com o usuário customizado.
+    def create(self, validated_data):
+        account, _ = Account.objects.get_or_create(**validated_data)
+        
+        return account
