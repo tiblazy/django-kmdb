@@ -12,6 +12,6 @@ class Account(AbstractUser):
     birthdate = models.DateField()
     bio = models.TextField(null=True)
     is_critic = models.BooleanField(default=False)
-    updated_at = models.DateTimeField(default=datetime.now())
+    updated_at = models.DateTimeField(auto_now=True)
     
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'birthdate']

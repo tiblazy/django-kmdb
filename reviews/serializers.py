@@ -6,8 +6,6 @@ from movies.models import Movie
 from movies.serializers import MovieSerializer
 
 class ReviewSerializer(serializers.ModelSerializer):
-    genres = Movie(many=True)
-    
     class Meta:
         model = Review
         fields = '__all__'
@@ -31,3 +29,4 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     def update(self, instance: Movie, validated_data: dict) -> dict:
         pass
+        
