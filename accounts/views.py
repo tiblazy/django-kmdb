@@ -2,7 +2,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 
@@ -12,11 +12,12 @@ from .models import Account
 from .serializers import AccountSerializer, LoginSerializer
 from .permissions import AccountPermission
 
-class AccountView(ListAPIView):
+class AccountView(ListAPIView, PageNumberPagination):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
+    pagination_class = PageNumberPagination
     
 class AccountRegisterView(CreateAPIView):
     queryset = Account.objects.all()
@@ -40,7 +41,7 @@ class AccountLoginView(APIView):
 class AccountFilterView(RetrieveAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    authentication_classes = [TokenAuthentication] 
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, AccountPermission]
     lookup_field = 'id'
     lookup_url_kwarg = 'user_id'

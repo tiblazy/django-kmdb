@@ -11,7 +11,6 @@ class MovieSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Movie
-        # fields = ['id', 'title', 'premiere', 'duration', 'classification', 'synopsis', 'genres']
         exclude = ['reviews']
         
     def create(self, validated_data):
@@ -30,14 +29,9 @@ class MovieSerializer(serializers.ModelSerializer):
         instance.genres.set([])
         
         for genre in genres_data:
-            genres = Genre.objects.filter(name=genre["name"]).first()
-
-            if not genres:
-                new_genre = Genre.objects.create(**genre)
-                instance.genres.add(new_genre)
-
-            instance.genres.add(genres)
-
+            genre, _ = Genre.objects.get_or_create(**genre)
+            instance.genres.add(genre)
+            
         for key, value in validated_data.items():
             setattr(instance, key, value)
 

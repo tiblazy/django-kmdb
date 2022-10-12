@@ -13,6 +13,6 @@ class Review(models.Model):
     spoilers = models.BooleanField(default=False)
     recomendation = models.CharField(max_length=50, choices=ReviewChoice.choices, default=ReviewChoice.NO)
     
-    accounts = models.ForeignKey('accounts.Account', on_delete = models.CASCADE, related_name = 'account_reviews')
-    movies = models.ForeignKey('movies.Movie', on_delete = models.CASCADE, related_name = 'movie_reviews')
+    critic = models.ForeignKey('accounts.Account', on_delete = models.CASCADE, related_name = 'account_reviews')
+    movie = models.ForeignKey('movies.Movie', on_delete = models.CASCADE, related_name = 'movie_reviews')
     

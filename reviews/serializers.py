@@ -2,36 +2,29 @@ from rest_framework import serializers
 
 from .models import Review
 
-from movies.models import Movie
-from movies.serializers import MovieSerializer
-
+class CriticSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    first_name = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
-        # fields = ['id', 'stars', 'review', 'spoilers', 'recomendation', 'movie_id', 'critic']
+        extra_kwargs = {
+            'movie_id': {'read_only': True}, 'id': {'read_only': True},
+            'movie': {'write_only': True, 'required': False}, 'stars': {'min_value': 1, 'max_value': 10}}
     
-    def validate_stars(self, value):
-        if type(value)==int and (value>=1 or value<=10):
-            return value
-        
-        raise serializers.ValidationError()
+    critic = CriticSerializer(read_only=True)
+    
+    movie_id = serializers.SerializerMethodField()
+    def get_movie_id(self, object):
+        return object.movie.id
             
     def create(self, validated_data):
-        # associar o critico a review
-        # associar a review ao filme
-        # crítico só pode fazer uma review
-        # crítico deve retornar todos os dados do usuário
-        
-        review = Review.objects.create(**validated_data)
+        critic = validated_data.pop('critic')
+        movie = validated_data.pop('movie')
+
+        review = Review.objects.create(
+            **validated_data, movie=movie, critic=critic)
     
         return review
-    
-    def update(self, instance: Movie, validated_data: dict) -> dict:
-        pass
-        # if validated_data('genres').exists:
-        #     instance.genres.update(**validated_data('genres'))            
-                    
-        # instance.save()
-        
-        # return instance
