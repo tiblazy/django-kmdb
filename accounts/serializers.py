@@ -1,11 +1,10 @@
-from rest_framework import serializers
-
 from django.contrib.auth.hashers import make_password
+
+from rest_framework import serializers
 
 from .models import Account
 
 class AccountSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Account
         exclude= ['groups', 'user_permissions', 'last_login', 'is_active', 'is_staff', 'date_joined']
