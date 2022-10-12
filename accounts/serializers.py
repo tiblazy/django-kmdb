@@ -25,7 +25,7 @@ class LoginSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['username', 'password']
     
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> dict:
         account, _ = Account.objects.get_or_create(**validated_data)
         
         return account

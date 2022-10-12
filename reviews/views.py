@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
-from rest_framework.views import Response,status
+from rest_framework.views import Request, Response,status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import ValidationError
@@ -24,16 +24,16 @@ class ReviewMovieView(ListCreateAPIView, PageNumberPagination):
     lookup_field = 'id'
     lookup_url_kwarg = 'movie_id'
     
-    def get(self, _, movie_id):
+    def get(self, _: Request, movie_id: int) -> Response:
         reviews = Review.objects.filter(movie=get_object_or_404(Movie, pk=movie_id))
         result_page = self.paginate_queryset(reviews)
         serializer = ReviewSerializer(result_page, many=True)
         
         return self.get_paginated_response(serializer.data)
     
-    def post(self, request, movie_id):
+    def post(self, request: Request, movie_id: int) -> Response:
         movie = get_object_or_404(Movie, pk=movie_id)
-        prev_reviews = Review.objects.filter(movie_id=movie.id, critic=request.user.id)
+        prev_reviews = Review.objects.filter(movie=movie.id, critic=request.user.id)
         
         serializer = ReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -41,7 +41,7 @@ class ReviewMovieView(ListCreateAPIView, PageNumberPagination):
         if len(prev_reviews)>0:
             raise ReviewValidationError()
         
-        serializer.save(movie=get_object_or_404(Movie, pk=movie_id), critic=request.user)
+        serializer.save(movie=movie, critic=request.user)
                 
         return Response(serializer.data, status.HTTP_201_CREATED)
     

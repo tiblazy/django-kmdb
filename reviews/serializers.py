@@ -17,10 +17,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     critic = CriticSerializer(read_only=True)
     
     movie_id = serializers.SerializerMethodField()
-    def get_movie_id(self, object):
+    def get_movie_id(self, object: object):
         return object.movie.id
             
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> dict:
         critic = validated_data.pop('critic')
         movie = validated_data.pop('movie')
 

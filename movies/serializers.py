@@ -12,7 +12,7 @@ class MovieSerializer(serializers.ModelSerializer):
     
     genres = GenreSerializer(many=True)
         
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> dict:
         genre_data = validated_data.pop('genres')
         
         movie = Movie.objects.create(**validated_data)
@@ -23,7 +23,7 @@ class MovieSerializer(serializers.ModelSerializer):
     
         return movie
     
-    def update(self, instance: Movie, validated_data: dict):
+    def update(self, instance: Movie, validated_data: dict) -> dict:
         genres_data = validated_data.pop('genres')
         instance.genres.set([])
         
