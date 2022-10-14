@@ -9,5 +9,3 @@ class Movie(models.Model):
     synopsis = models.TextField()
     
     genres = models.ManyToManyField('genres.Genre', related_name='genre_movies')
-    reviews = models.ManyToManyField('reviews.Review', related_name ='review_movies')
-    

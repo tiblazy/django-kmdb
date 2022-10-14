@@ -13,19 +13,9 @@ class AccountSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data: dict) -> dict:
-        validated_data.update({'password': make_password(validated_data['password'])})
-        account = Account.objects.create(**validated_data)
+        account = Account.objects.create_user(**validated_data)
         
         return account
-class LoginSerializer(serializers.ModelSerializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-    
-    class Meta:
-        model = Account
-        fields = ['username', 'password']
-    
-    def create(self, validated_data: dict) -> dict:
-        account, _ = Account.objects.get_or_create(**validated_data)
-        
-        return account
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)

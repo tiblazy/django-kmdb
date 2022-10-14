@@ -8,8 +8,8 @@ from genres.serializers import GenreSerializer
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        exclude = ['reviews']
-    
+        fields = '__all__'
+            
     genres = GenreSerializer(many=True)
         
     def create(self, validated_data: dict) -> dict:

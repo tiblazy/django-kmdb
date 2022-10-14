@@ -3,12 +3,4 @@ from rest_framework.views import Request
 
 class AccountPermission(permissions.BasePermission):
     def has_object_permission(self, request: Request, _, obj: object) -> bool:
-        if request.method == 'GET':
-            if request.user.is_authenticated:
-                
-                if request.user.is_superuser or obj == request.user and request.user.is_critic:
-                    return True
-                        
-                return False
-            return False
-        return False    
+        return (request.user.is_superuser or obj == request.user and request.user.is_critic)
